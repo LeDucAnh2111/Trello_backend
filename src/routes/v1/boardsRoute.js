@@ -1,12 +1,14 @@
 import express from "express";
 import { boardValidation } from "@/validation/boardsValidation";
-import { boardController } from "@/controller/boardController";
+import { boardsController } from "@/controller/boardsController";
 const Router = express.Router();
 
 Router.route("/")
-  .get((req, res) => {
-    res.json({ message: "Route get boards" });
-  })
-  .post(boardValidation.createBoard, boardController.createBoard);
+  .get(boardsController.getBoards)
+  .post(boardValidation.createBoard, boardsController.createBoard);
+
+Router.route("/:id")
+  .get(boardsController.getDetail)
+  .put(boardValidation.updateBoard, boardsController.updateBoard);
 
 export default Router;

@@ -7,6 +7,9 @@ import cors from "cors";
 import { corsOptions } from "./config/cors";
 import { Server } from "http";
 import { config_socket } from "./config/socketIo";
+import passport from "passport";
+import configPassport from "./config/passport";
+import session from "express-session";
 
 const PORT = process.env.APP_PORT || 3000;
 const URL = "localhost";
@@ -15,10 +18,23 @@ const Action = async () => {
   const app = express();
   // lắng nghe sự kiện kết nối với socket
   const server = Server(app);
+
   await config_socket.socket_connect(server);
   // Lắng nghe sự kiện kết nối với MongoDB
+  app.use(
+    session({
+      secret: "leducanh1234", // Bạn nên thay thế bằng một chuỗi bí mật và an toàn
+      resave: false,
+      saveUninitialized: false,
+      cookie: { secure: false }, // Nếu dùng HTTPS, bạn cần set secure: true
+    })
+  );
   app.use(cors(corsOptions));
   app.use(express.json());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  configPassport(); // passport session middleware
+
   app.use("/v1", APIs_V1);
 
   app.use(errorHandlingMiddleware);

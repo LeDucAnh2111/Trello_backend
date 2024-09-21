@@ -1,4 +1,5 @@
 import { cardsController } from "@/controller/cardsController";
+import { checkTokenMiddleware } from "@/middleware/checkTokenMiddleware";
 import { cardsValidation } from "@/validation/cardsValidation";
 import express from "express";
 
@@ -7,7 +8,11 @@ const Router = express.Router();
 
 Router.route("/")
   .get()
-  .post(cardsValidation.createNew, cardsController.createNew);
+  .post(
+    checkTokenMiddleware,
+    cardsValidation.createNew,
+    cardsController.createNew
+  );
 
 Router.route("/:id")
   .put(cardsValidation.update, cardsController.update)

@@ -1,7 +1,7 @@
 import { config_socket } from "@/config/socketIo";
 import { cardsService } from "@/services/cardService";
-import ApiError from "@/uilt/ApiError";
-import { emitSocket } from "@/uilt/emitSocket";
+import ApiError from "@/util/ApiError";
+import { emitSocket } from "@/util/emitSocket";
 import { StatusCodes } from "http-status-codes";
 
 const createNew = async (req, res, next) => {

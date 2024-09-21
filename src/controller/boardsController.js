@@ -1,12 +1,18 @@
-import ApiError from "@/uilt/ApiError";
+import ApiError from "@/util/ApiError";
 import { boardService } from "@/services/boardService";
 import { StatusCodes } from "http-status-codes";
 import { config_socket } from "@/config/socketIo";
 
 const createBoard = async (req, res, next) => {
   try {
-    const createBoardResponse = await boardService.createNew(req.body);
-
+    const createBoardResponse = await boardService.createNew(
+      req.body,
+      req.user.idUser
+    );
+    config_socket
+      .get_socket()
+      .to(req.user.idUser)
+      .emit("createBoardResponse", true);
     res.status(StatusCodes.OK).json(createBoardResponse);
   } catch (error) {
     next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error));
@@ -37,9 +43,10 @@ const getDetail = async (req, res, next) => {
     const id = req.params.id;
     // console.log(id);
     const detailBoard = await boardService.getDetail(id);
+
     res.status(StatusCodes.OK).json(detailBoard);
   } catch (error) {
-    next(new ApiError(error.statusCode, error));
+    next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error));
   }
 };
 
@@ -61,10 +68,20 @@ const updateBoard = async (req, res, next) => {
   }
 };
 
+const searchBoard = async (req, res, next) => {
+  try {
+    const respone = await boardService.searchBoard(req.body);
+    res.status(StatusCodes.OK).json(respone);
+  } catch (error) {
+    next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error));
+  }
+};
+
 export const boardsController = {
   createBoard,
   getBoards,
   getBoard,
   updateBoard,
   getDetail,
+  searchBoard,
 };

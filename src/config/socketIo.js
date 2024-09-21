@@ -1,5 +1,5 @@
-import ApiError from "@/uilt/ApiError";
-import { WHITELIST_DOMAIN } from "@/uilt/constants";
+import ApiError from "@/util/ApiError";
+import { WHITELIST_DOMAIN } from "@/util/constants";
 import { StatusCodes } from "http-status-codes";
 import socket from "socket.io";
 
@@ -27,6 +27,11 @@ const socket_connect = async (server) => {
 
     socket.on("joinBoard", (boardId) => {
       socket.join(boardId);
+    });
+
+    socket.on("joinUser", (userId) => {
+      socket.join(userId);
+      console.log("join user", userId);
     });
 
     socket.on("leaveBoard", (boardId) => {

@@ -1,14 +1,14 @@
 import { Get_DB } from "@/config/mongodb";
 import { ObjectId, ReturnDocument } from "mongodb";
 import Joi from "joi";
-import slugify from "@/uilt/plugFormatString";
+import slugify from "@/util/plugFormatString";
 import { columnModel } from "./columnModel";
 import { cardModel } from "./cardModel";
 const BOARD_COLLECTTION_NAME = "boards";
 const BOARD_COLLECTTION_SCHEMA = Joi.object({
   title: Joi.string().required().min(5).max(50).trim().strict(),
   plug: Joi.string().required().min(5).max(50).trim().strict(),
-  description: Joi.string().required().min(5).max(50).trim().strict(),
+  description: Joi.string().optional().min(5).max(50).trim().strict(),
 
   columnOrderIds: Joi.array().items(Joi.string()).default([]),
 
@@ -120,8 +120,6 @@ const pushColumnIds = async (id, value) => {
 
 const deleteItemColumnOrderIdsByIdColumn = async (id, columnId) => {
   try {
-    console.log(columnId);
-
     const result = await Get_DB()
       .collection("boards")
       .updateOne(
@@ -129,8 +127,19 @@ const deleteItemColumnOrderIdsByIdColumn = async (id, columnId) => {
         { $pull: { columnOrderIds: new ObjectId(columnId) } },
         { returnDocument: ReturnDocument.AFTER }
       );
-    console.log(result);
 
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getByKey = async (value) => {
+  try {
+    const result = await Get_DB()
+      .collection(BOARD_COLLECTTION_NAME)
+      .find(value)
+      .toArray();
     return result;
   } catch (error) {
     throw error;
@@ -147,4 +156,5 @@ export const boardModel = {
   getDetail,
   pushColumnIds,
   deleteItemColumnOrderIdsByIdColumn,
+  getByKey,
 };

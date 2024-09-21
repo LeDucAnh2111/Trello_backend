@@ -2,7 +2,7 @@ import { Get_DB } from "@/config/mongodb";
 import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,
-} from "@/uilt/ruleObject_IdMongoDb";
+} from "@/util/ruleObject_IdMongoDb";
 import Joi from "joi";
 import { ObjectId } from "mongodb";
 

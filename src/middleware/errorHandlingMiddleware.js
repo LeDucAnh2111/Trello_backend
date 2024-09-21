@@ -1,9 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import "dotenv/config";
 export const errorHandlingMiddleware = (err, req, res, next) => {
-  console.log("=====", err.message);
-  console.log("=====", err.stack);
-
   // kiểm tra nếu lỗi được đưa về đây không có status thì sẽ cho err 1 status mặc định là 500
   err.statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
 
@@ -18,8 +15,6 @@ export const errorHandlingMiddleware = (err, req, res, next) => {
   };
 
   if (process.env.BUILD_MODE === "production") {
-    console.log("check mode");
-
     delete responseError.stack;
   }
 

@@ -1,7 +1,7 @@
 import { config_socket } from "@/config/socketIo";
 import { columnsService } from "@/services/columnService";
-import ApiError from "@/uilt/ApiError";
-import { emitSocket } from "@/uilt/emitSocket";
+import ApiError from "@/util/ApiError";
+import { emitSocket } from "@/util/emitSocket";
 import { StatusCodes } from "http-status-codes";
 
 const createColumn = async (req, res, next) => {

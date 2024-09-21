@@ -1,8 +1,8 @@
-import ApiError from "@/uilt/ApiError";
+import ApiError from "@/util/ApiError";
 import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,
-} from "@/uilt/ruleObject_IdMongoDb";
+} from "@/util/ruleObject_IdMongoDb";
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 
@@ -118,8 +118,6 @@ const deleteColumn = async (req, res, next) => {
     id: Joi.string().required().pattern(OBJECT_ID_RULE),
   });
   try {
-    console.log(req.params.id);
-
     await schemaColumns.validateAsync({ id: req.params.id });
     next();
   } catch (error) {

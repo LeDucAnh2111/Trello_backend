@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { WHITELIST_DOMAIN } from "@/uilt/constants";
-import ApiError from "@/uilt/ApiError";
+import { WHITELIST_DOMAIN } from "@/util/constants";
+import ApiError from "@/util/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 export const corsOptions = {

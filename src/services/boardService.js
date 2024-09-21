@@ -1,10 +1,12 @@
-import slugify from "@/uilt/plugFormatString";
+import slugify from "@/util/plugFormatString";
 import { boardModel } from "@/models/boardModel";
-import ApiError from "@/uilt/ApiError";
+import ApiError from "@/util/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { DeepClone } from "@/uilt/deepClone";
+import { DeepClone } from "@/util/deepClone";
+import { users_boardsModel } from "@/models/users_boardsModel";
+import { userModel } from "@/models/userModal";
 
-const createNew = async (data) => {
+const createNew = async (data, idUser) => {
   try {
     const newBoard = {
       ...data,
@@ -13,9 +15,16 @@ const createNew = async (data) => {
     // create new board
     const createNewBoard = await boardModel.createNew(newBoard);
 
+    // add boards and users in users_boards
+
     const findOneBoard = await boardModel.findOneByID(
       createNewBoard.insertedId
     );
+    await users_boardsModel.createNew({
+      userId: idUser,
+      boardId: findOneBoard._id.toString(),
+      role: "admin",
+    });
 
     return findOneBoard;
   } catch (error) {

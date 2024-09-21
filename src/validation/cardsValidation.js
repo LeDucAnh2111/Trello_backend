@@ -1,8 +1,8 @@
-import ApiError from "@/uilt/ApiError";
+import ApiError from "@/util/ApiError";
 import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,
-} from "@/uilt/ruleObject_IdMongoDb";
+} from "@/util/ruleObject_IdMongoDb";
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 
